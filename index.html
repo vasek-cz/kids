@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Fun for Kids</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Multiplication Fun!</h1>
+            <div class="score-board">
+                <span>Score: <span id="score">0</span></span>
+                <span>Streak: <span id="streak">0</span></span>
+            </div>
+        </header>
+
+        <main>
+            <div class="game-area">
+                <div class="question-card">
+                    <div class="question">
+                        <span id="num1">2</span>
+                        <span class="operator">×</span>
+                        <span id="num2">3</span>
+                        <span class="equals">=</span>
+                        <span class="answer-placeholder">?</span>
+                    </div>
+                </div>
+
+                <div class="answer-section">
+                    <input type="number" id="answer-input" placeholder="Your answer" min="1" max="81">
+                    <button id="submit-btn">Check Answer</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="controls">
+                    <button id="new-question-btn">New Question</button>
+                    <button id="reset-btn">Reset Score</button>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h3>Your Progress</h3>
+                <div class="progress-grid" id="progress-grid"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
