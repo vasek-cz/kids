@@ -22,6 +22,34 @@ header {
     margin-bottom: 30px;
 }
 
+.game-mode-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    padding: 10px 20px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mode-btn.active {
+    background: white;
+    color: #667eea;
+}
+
 h1 {
     color: white;
     font-size: 2.5rem;
@@ -44,6 +72,60 @@ h1 {
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     margin-bottom: 30px;
+}
+
+.game-mode {
+    width: 100%;
+}
+
+.rounding-controls {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.rounding-controls label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4a5568;
+    margin-right: 10px;
+}
+
+.rounding-controls select {
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #4a5568;
+    font-family: inherit;
+}
+
+.rounding-question {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #4a5568;
+    margin-bottom: 20px;
+}
+
+.instruction {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 15px;
+    border: 3px solid #e2e8f0;
+}
+
+#round-number {
+    color: #667eea;
+    background: #e2e8f0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+#round-to {
+    color: #e53e3e;
+    font-weight: bold;
 }
 
 .question-card {
@@ -99,10 +181,40 @@ h1 {
     font-family: inherit;
 }
 
+#rounding-answer-input {
+    font-size: 1.5rem;
+    padding: 12px 20px;
+    border: 3px solid #e2e8f0;
+    border-radius: 10px;
+    text-align: center;
+    width: 150px;
+    font-family: inherit;
+}
+
 #answer-input:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#rounding-answer-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Remove spin buttons from number inputs */
+#answer-input::-webkit-outer-spin-button,
+#answer-input::-webkit-inner-spin-button,
+#rounding-answer-input::-webkit-outer-spin-button,
+#rounding-answer-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#answer-input[type=number],
+#rounding-answer-input[type=number] {
+    -moz-appearance: textfield;
 }
 
 button {
@@ -122,6 +234,16 @@ button {
 }
 
 #submit-btn:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+#rounding-submit-btn {
+    background: #48bb78;
+    color: white;
+}
+
+#rounding-submit-btn:hover {
     background: #38a169;
     transform: translateY(-2px);
 }
@@ -185,6 +307,38 @@ button {
     color: #4a5568;
 }
 
+.rounding-progress {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.rounding-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #f7fafc;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.stat-value {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #667eea;
+}
+
 .progress-grid {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
@@ -232,6 +386,10 @@ button {
         gap: 10px;
     }
     
+    .rounding-question {
+        font-size: 1.8rem;
+    }
+    
     #num1, #num2, .answer-placeholder {
         padding: 10px 15px;
         min-width: 60px;
@@ -244,5 +402,14 @@ button {
     
     .progress-grid {
         grid-template-columns: repeat(6, 1fr);
+    }
+    
+    .mode-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .stat-item {
+        padding: 12px 15px;
     }
 }

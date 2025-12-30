@@ -9,7 +9,11 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎯 Multiplication Fun!</h1>
+            <h1 id="game-title">🎯 Math Fun!</h1>
+            <div class="game-mode-selector">
+                <button id="multiplication-mode" class="mode-btn active">Multiplication</button>
+                <button id="rounding-mode" class="mode-btn">Rounding</button>
+            </div>
             <div class="score-board">
                 <span>Score: <span id="score">0</span></span>
                 <span>Streak: <span id="streak">0</span></span>
@@ -18,32 +22,81 @@
 
         <main>
             <div class="game-area">
-                <div class="question-card">
-                    <div class="question">
-                        <span id="num1">2</span>
-                        <span class="operator">×</span>
-                        <span id="num2">3</span>
-                        <span class="equals">=</span>
-                        <span class="answer-placeholder">?</span>
+                <!-- Multiplication Mode -->
+                <div id="multiplication-game" class="game-mode">
+                    <div class="question-card">
+                        <div class="question">
+                            <span id="num1">2</span>
+                            <span class="operator">×</span>
+                            <span id="num2">3</span>
+                            <span class="equals">=</span>
+                            <span class="answer-placeholder">?</span>
+                        </div>
+                    </div>
+
+                    <div class="answer-section">
+                        <input type="number" id="answer-input" placeholder="Your answer" min="1" max="81">
+                        <button id="submit-btn">Check Answer</button>
+                    </div>
+
+                    <div class="feedback" id="feedback"></div>
+
+                    <div class="controls">
+                        <button id="new-question-btn">New Question</button>
+                        <button id="reset-btn">Reset Score</button>
                     </div>
                 </div>
 
-                <div class="answer-section">
-                    <input type="number" id="answer-input" placeholder="Your answer" min="1" max="81">
-                    <button id="submit-btn">Check Answer</button>
-                </div>
+                <!-- Rounding Mode -->
+                <div id="rounding-game" class="game-mode" style="display: none;">
+                    <div class="rounding-controls">
+                        <label for="rounding-type">Round to nearest:</label>
+                        <select id="rounding-type">
+                            <option value="10">10s</option>
+                            <option value="100">100s</option>
+                            <option value="1000">1000s</option>
+                        </select>
+                    </div>
 
-                <div class="feedback" id="feedback"></div>
+                    <div class="question-card">
+                        <div class="rounding-question">
+                            <div class="instruction">Round <span id="round-number">123</span> to the nearest <span id="round-to">10</span></div>
+                        </div>
+                    </div>
 
-                <div class="controls">
-                    <button id="new-question-btn">New Question</button>
-                    <button id="reset-btn">Reset Score</button>
+                    <div class="answer-section">
+                        <input type="number" id="rounding-answer-input" placeholder="Your answer">
+                        <button id="rounding-submit-btn">Check Answer</button>
+                    </div>
+
+                    <div class="feedback" id="rounding-feedback"></div>
+
+                    <div class="controls">
+                        <button id="rounding-new-question-btn">New Question</button>
+                        <button id="rounding-reset-btn">Reset Score</button>
+                    </div>
                 </div>
             </div>
 
             <div class="progress-section">
-                <h3>Your Progress</h3>
+                <h3 id="progress-title">Your Progress</h3>
                 <div class="progress-grid" id="progress-grid"></div>
+                <div class="rounding-progress" id="rounding-progress" style="display: none;">
+                    <div class="rounding-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Round to 10s:</span>
+                            <span class="stat-value" id="tens-accuracy">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Round to 100s:</span>
+                            <span class="stat-value" id="hundreds-accuracy">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Round to 1000s:</span>
+                            <span class="stat-value" id="thousands-accuracy">0%</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
