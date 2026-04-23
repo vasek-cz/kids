@@ -13,6 +13,7 @@
             <div class="game-mode-selector">
                 <button id="multiplication-mode" class="mode-btn active">Multiplication</button>
                 <button id="rounding-mode" class="mode-btn">Rounding</button>
+                <button id="fractions-mode" class="mode-btn">Fractions</button>
             </div>
             <div class="score-board">
                 <span>Score: <span id="score">0</span></span>
@@ -76,6 +77,49 @@
                         <button id="rounding-reset-btn">Reset Score</button>
                     </div>
                 </div>
+
+                <!-- Fractions Mode -->
+                <div id="fractions-game" class="game-mode" style="display: none;">
+                    <div class="fractions-controls">
+                        <label for="fractions-difficulty">Difficulty:</label>
+                        <select id="fractions-difficulty">
+                            <option value="easy">Easy (small numbers)</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard (larger numbers)</option>
+                        </select>
+                    </div>
+
+                    <div class="question-card">
+                        <div class="fraction-question">
+                            <div class="instruction">Simplify this fraction:</div>
+                            <div class="fraction-display">
+                                <div class="fraction">
+                                    <span class="numerator" id="fraction-numerator">4</span>
+                                    <span class="fraction-bar"></span>
+                                    <span class="denominator" id="fraction-denominator">8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="answer-section fraction-answer-section">
+                        <div class="fraction-input-group">
+                            <div class="fraction">
+                                <input type="number" id="fraction-numerator-input" class="fraction-input" placeholder="?" min="1" aria-label="Numerator">
+                                <span class="fraction-bar"></span>
+                                <input type="number" id="fraction-denominator-input" class="fraction-input" placeholder="?" min="1" aria-label="Denominator">
+                            </div>
+                        </div>
+                        <button id="fractions-submit-btn">Check Answer</button>
+                    </div>
+
+                    <div class="feedback" id="fractions-feedback"></div>
+
+                    <div class="controls">
+                        <button id="fractions-new-question-btn">New Question</button>
+                        <button id="fractions-reset-btn">Reset Score</button>
+                    </div>
+                </div>
             </div>
 
             <div class="progress-section">
@@ -94,6 +138,22 @@
                         <div class="stat-item">
                             <span class="stat-label">Round to 1000s:</span>
                             <span class="stat-value" id="thousands-accuracy">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="fractions-progress" id="fractions-progress" style="display: none;">
+                    <div class="rounding-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Easy:</span>
+                            <span class="stat-value" id="easy-accuracy">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Medium:</span>
+                            <span class="stat-value" id="medium-accuracy">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Hard:</span>
+                            <span class="stat-value" id="hard-accuracy">0%</span>
                         </div>
                     </div>
                 </div>

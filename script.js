@@ -5,8 +5,10 @@ class MathGame {
         this.currentQuestion = null;
         this.currentMode = 'multiplication';
         this.roundingType = 10;
+        this.fractionsDifficulty = 'easy';
         this.progress = this.loadProgress();
         this.roundingProgress = this.loadRoundingProgress();
+        this.fractionsProgress = this.loadFractionsProgress();
         
         this.initializeElements();
         this.setupEventListeners();
@@ -46,16 +48,34 @@ class MathGame {
         this.roundingFeedbackElement = document.getElementById('rounding-feedback');
         this.roundingNewQuestionBtn = document.getElementById('rounding-new-question-btn');
         this.roundingResetBtn = document.getElementById('rounding-reset-btn');
-        this.roundingProgress = document.getElementById('rounding-progress');
+        this.roundingProgressElement = document.getElementById('rounding-progress');
         this.tensAccuracy = document.getElementById('tens-accuracy');
         this.hundredsAccuracy = document.getElementById('hundreds-accuracy');
         this.thousandsAccuracy = document.getElementById('thousands-accuracy');
+        
+        // Fractions elements
+        this.fractionsModeBtn = document.getElementById('fractions-mode');
+        this.fractionsGame = document.getElementById('fractions-game');
+        this.fractionsDifficultySelect = document.getElementById('fractions-difficulty');
+        this.fractionNumeratorElement = document.getElementById('fraction-numerator');
+        this.fractionDenominatorElement = document.getElementById('fraction-denominator');
+        this.fractionNumeratorInput = document.getElementById('fraction-numerator-input');
+        this.fractionDenominatorInput = document.getElementById('fraction-denominator-input');
+        this.fractionsSubmitBtn = document.getElementById('fractions-submit-btn');
+        this.fractionsFeedbackElement = document.getElementById('fractions-feedback');
+        this.fractionsNewQuestionBtn = document.getElementById('fractions-new-question-btn');
+        this.fractionsResetBtn = document.getElementById('fractions-reset-btn');
+        this.fractionsProgressElement = document.getElementById('fractions-progress');
+        this.easyAccuracy = document.getElementById('easy-accuracy');
+        this.mediumAccuracy = document.getElementById('medium-accuracy');
+        this.hardAccuracy = document.getElementById('hard-accuracy');
     }
 
     setupEventListeners() {
         // Mode switching
         this.multiplicationModeBtn.addEventListener('click', () => this.switchMode('multiplication'));
         this.roundingModeBtn.addEventListener('click', () => this.switchMode('rounding'));
+        this.fractionsModeBtn.addEventListener('click', () => this.switchMode('fractions'));
         
         // Multiplication mode
         this.submitBtn.addEventListener('click', () => this.checkAnswer());
@@ -93,6 +113,38 @@ class MathGame {
             this.roundingFeedbackElement.textContent = '';
             this.roundingFeedbackElement.className = 'feedback';
         });
+        
+        // Fractions mode
+        this.fractionsDifficultySelect.addEventListener('change', (e) => {
+            this.fractionsDifficulty = e.target.value;
+            this.generateNewQuestion();
+        });
+        
+        this.fractionsSubmitBtn.addEventListener('click', () => this.checkFractionsAnswer());
+        this.fractionsNewQuestionBtn.addEventListener('click', () => this.generateNewQuestion());
+        this.fractionsResetBtn.addEventListener('click', () => this.resetGame());
+        
+        this.fractionNumeratorInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.fractionDenominatorInput.focus();
+            }
+        });
+        
+        this.fractionDenominatorInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.checkFractionsAnswer();
+            }
+        });
+
+        this.fractionNumeratorInput.addEventListener('input', () => {
+            this.fractionsFeedbackElement.textContent = '';
+            this.fractionsFeedbackElement.className = 'feedback';
+        });
+
+        this.fractionDenominatorInput.addEventListener('input', () => {
+            this.fractionsFeedbackElement.textContent = '';
+            this.fractionsFeedbackElement.className = 'feedback';
+        });
     }
 
     switchMode(mode) {
@@ -101,22 +153,30 @@ class MathGame {
         // Update button states
         this.multiplicationModeBtn.classList.toggle('active', mode === 'multiplication');
         this.roundingModeBtn.classList.toggle('active', mode === 'rounding');
+        this.fractionsModeBtn.classList.toggle('active', mode === 'fractions');
         
         // Show/hide game modes
         this.multiplicationGame.style.display = mode === 'multiplication' ? 'block' : 'none';
         this.roundingGame.style.display = mode === 'rounding' ? 'block' : 'none';
+        this.fractionsGame.style.display = mode === 'fractions' ? 'block' : 'none';
         
         // Update title and progress display
+        this.progressGrid.style.display = 'none';
+        this.roundingProgressElement.style.display = 'none';
+        this.fractionsProgressElement.style.display = 'none';
+        
         if (mode === 'multiplication') {
             this.gameTitle.textContent = '🎯 Multiplication Fun!';
             this.progressTitle.textContent = 'Your Progress';
             this.progressGrid.style.display = 'grid';
-            this.roundingProgress.style.display = 'none';
-        } else {
+        } else if (mode === 'rounding') {
             this.gameTitle.textContent = '🔢 Rounding Fun!';
             this.progressTitle.textContent = 'Rounding Progress';
-            this.progressGrid.style.display = 'none';
-            this.roundingProgress.style.display = 'block';
+            this.roundingProgressElement.style.display = 'block';
+        } else {
+            this.gameTitle.textContent = '✂️ Fraction Simplification!';
+            this.progressTitle.textContent = 'Fractions Progress';
+            this.fractionsProgressElement.style.display = 'block';
         }
         
         this.generateNewQuestion();
@@ -126,8 +186,10 @@ class MathGame {
     generateNewQuestion() {
         if (this.currentMode === 'multiplication') {
             this.generateMultiplicationQuestion();
-        } else {
+        } else if (this.currentMode === 'rounding') {
             this.generateRoundingQuestion();
+        } else {
+            this.generateFractionsQuestion();
         }
     }
 
@@ -254,6 +316,148 @@ class MathGame {
         this.saveProgress();
     }
 
+    // --- Fractions helpers and methods ---
+
+    gcd(a, b) {
+        a = Math.abs(a);
+        b = Math.abs(b);
+        while (b) {
+            [a, b] = [b, a % b];
+        }
+        return a;
+    }
+
+    generateFractionsQuestion() {
+        let simplifiedNum, simplifiedDen, multiplier;
+
+        switch (this.fractionsDifficulty) {
+            case 'easy':
+                // Small primes, multiplier 2-4
+                simplifiedNum = this.randomInt(1, 5);
+                simplifiedDen = this.randomInt(simplifiedNum + 1, 8);
+                multiplier = this.randomInt(2, 4);
+                break;
+            case 'medium':
+                simplifiedNum = this.randomInt(1, 7);
+                simplifiedDen = this.randomInt(simplifiedNum + 1, 12);
+                multiplier = this.randomInt(2, 6);
+                break;
+            case 'hard':
+                simplifiedNum = this.randomInt(2, 11);
+                simplifiedDen = this.randomInt(simplifiedNum + 1, 16);
+                multiplier = this.randomInt(3, 9);
+                break;
+            default:
+                simplifiedNum = 1;
+                simplifiedDen = 2;
+                multiplier = 2;
+        }
+
+        // Make sure the simplified form is actually fully reduced
+        const g = this.gcd(simplifiedNum, simplifiedDen);
+        simplifiedNum = simplifiedNum / g;
+        simplifiedDen = simplifiedDen / g;
+
+        const displayNum = simplifiedNum * multiplier;
+        const displayDen = simplifiedDen * multiplier;
+
+        this.currentQuestion = {
+            numerator: displayNum,
+            denominator: displayDen,
+            answerNum: simplifiedNum,
+            answerDen: simplifiedDen
+        };
+
+        this.fractionNumeratorElement.textContent = displayNum;
+        this.fractionDenominatorElement.textContent = displayDen;
+        this.fractionNumeratorInput.value = '';
+        this.fractionDenominatorInput.value = '';
+        this.fractionNumeratorInput.focus();
+
+        this.fractionsFeedbackElement.textContent = '';
+        this.fractionsFeedbackElement.className = 'feedback';
+    }
+
+    randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    checkFractionsAnswer() {
+        const userNum = parseInt(this.fractionNumeratorInput.value);
+        const userDen = parseInt(this.fractionDenominatorInput.value);
+
+        if (isNaN(userNum) || isNaN(userDen)) {
+            this.showFractionsFeedback('Fill in both numerator and denominator! 🤔', 'incorrect');
+            return;
+        }
+
+        if (userDen === 0) {
+            this.showFractionsFeedback('Denominator can\'t be zero! 🚫', 'incorrect');
+            return;
+        }
+
+        const isCorrect = userNum === this.currentQuestion.answerNum && userDen === this.currentQuestion.answerDen;
+        const difficultyKey = this.fractionsDifficulty;
+
+        if (isCorrect) {
+            this.score += 10;
+            this.streak += 1;
+            this.updateFractionsProgress(difficultyKey, true);
+
+            const encouragements = [
+                'Simplified! 🎉', 'Great job! ⭐', 'Perfect! 🌟',
+                'You nailed it! 🚀', 'Fraction hero! 🎊', 'Well done! 👏'
+            ];
+            const message = encouragements[Math.floor(Math.random() * encouragements.length)];
+            this.showFractionsFeedback(message, 'correct');
+
+            setTimeout(() => this.generateNewQuestion(), 1500);
+        } else {
+            this.streak = 0;
+            this.updateFractionsProgress(difficultyKey, false);
+            this.showFractionsFeedback(
+                `Not quite! ${this.currentQuestion.numerator}/${this.currentQuestion.denominator} simplifies to ${this.currentQuestion.answerNum}/${this.currentQuestion.answerDen} 💪`,
+                'incorrect'
+            );
+        }
+
+        this.updateDisplay();
+        this.saveProgress();
+    }
+
+    showFractionsFeedback(message, type) {
+        this.fractionsFeedbackElement.textContent = message;
+        this.fractionsFeedbackElement.className = `feedback ${type}`;
+    }
+
+    updateFractionsProgress(difficultyKey, isCorrect) {
+        if (!this.fractionsProgress[difficultyKey]) {
+            this.fractionsProgress[difficultyKey] = { attempts: 0, correct: 0 };
+        }
+
+        this.fractionsProgress[difficultyKey].attempts += 1;
+        if (isCorrect) {
+            this.fractionsProgress[difficultyKey].correct += 1;
+        }
+
+        this.updateFractionsStats();
+    }
+
+    updateFractionsStats() {
+        const stats = {
+            easy: this.fractionsProgress.easy || { attempts: 0, correct: 0 },
+            medium: this.fractionsProgress.medium || { attempts: 0, correct: 0 },
+            hard: this.fractionsProgress.hard || { attempts: 0, correct: 0 }
+        };
+
+        this.easyAccuracy.textContent = stats.easy.attempts > 0 ?
+            Math.round((stats.easy.correct / stats.easy.attempts) * 100) + '%' : '0%';
+        this.mediumAccuracy.textContent = stats.medium.attempts > 0 ?
+            Math.round((stats.medium.correct / stats.medium.attempts) * 100) + '%' : '0%';
+        this.hardAccuracy.textContent = stats.hard.attempts > 0 ?
+            Math.round((stats.hard.correct / stats.hard.attempts) * 100) + '%' : '0%';
+    }
+
     updateProgress(questionKey, isCorrect) {
         if (!this.progress[questionKey]) {
             this.progress[questionKey] = { attempts: 0, correct: 0 };
@@ -283,8 +487,10 @@ class MathGame {
     updateProgressDisplay() {
         if (this.currentMode === 'multiplication') {
             this.updateProgressGrid();
-        } else {
+        } else if (this.currentMode === 'rounding') {
             this.updateRoundingStats();
+        } else {
+            this.updateFractionsStats();
         }
     }
 
@@ -349,6 +555,7 @@ class MathGame {
             this.streak = 0;
             this.progress = {};
             this.roundingProgress = {};
+            this.fractionsProgress = {};
             this.updateDisplay();
             this.updateProgressDisplay();
             this.saveProgress();
@@ -357,8 +564,10 @@ class MathGame {
             const message = 'Fresh start! Let\'s learn! 🌱';
             if (this.currentMode === 'multiplication') {
                 this.showFeedback(message, 'correct');
-            } else {
+            } else if (this.currentMode === 'rounding') {
                 this.showRoundingFeedback(message, 'correct');
+            } else {
+                this.showFractionsFeedback(message, 'correct');
             }
         }
     }
@@ -373,9 +582,15 @@ class MathGame {
         return saved ? JSON.parse(saved) : {};
     }
 
+    loadFractionsProgress() {
+        const saved = localStorage.getItem('fractionsProgress');
+        return saved ? JSON.parse(saved) : {};
+    }
+
     saveProgress() {
         localStorage.setItem('multiplicationProgress', JSON.stringify(this.progress));
         localStorage.setItem('roundingProgress', JSON.stringify(this.roundingProgress));
+        localStorage.setItem('fractionsProgress', JSON.stringify(this.fractionsProgress));
         localStorage.setItem('multiplicationScore', this.score.toString());
         localStorage.setItem('multiplicationStreak', this.streak.toString());
     }

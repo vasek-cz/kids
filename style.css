@@ -372,6 +372,146 @@ button {
     color: #744210;
 }
 
+/* Fractions mode styles */
+.fractions-controls {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.fractions-controls label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4a5568;
+    margin-right: 10px;
+}
+
+.fractions-controls select {
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #4a5568;
+    font-family: inherit;
+}
+
+.fraction-question {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.fraction-question .instruction {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4a5568;
+    background: #f7fafc;
+    padding: 15px;
+    border-radius: 15px;
+    border: 3px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.fraction-display {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.numerator, .denominator {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #667eea;
+    min-width: 60px;
+    text-align: center;
+}
+
+.fraction-bar {
+    width: 100%;
+    min-width: 60px;
+    height: 4px;
+    background: #4a5568;
+    border-radius: 2px;
+}
+
+.fraction-answer-section {
+    align-items: center;
+}
+
+.fraction-input-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.fraction-input {
+    font-size: 1.5rem;
+    padding: 8px 12px;
+    border: 3px solid #e2e8f0;
+    border-radius: 10px;
+    text-align: center;
+    width: 80px;
+    font-family: inherit;
+}
+
+.fraction-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Remove spin buttons from fraction inputs */
+.fraction-input::-webkit-outer-spin-button,
+.fraction-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.fraction-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#fractions-submit-btn {
+    background: #48bb78;
+    color: white;
+}
+
+#fractions-submit-btn:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+#fractions-new-question-btn {
+    background: #667eea;
+    color: white;
+}
+
+#fractions-new-question-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-2px);
+}
+
+#fractions-reset-btn {
+    background: #ed8936;
+    color: white;
+}
+
+#fractions-reset-btn:hover {
+    background: #dd6b20;
+    transform: translateY(-2px);
+}
+
+.fractions-progress {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 10px;
@@ -411,5 +551,19 @@ button {
     
     .stat-item {
         padding: 12px 15px;
+    }
+
+    .numerator, .denominator {
+        font-size: 2rem;
+    }
+
+    .fraction-input {
+        width: 60px;
+        font-size: 1.2rem;
+        padding: 6px 8px;
+    }
+
+    .fraction-question .instruction {
+        font-size: 1.2rem;
     }
 }
