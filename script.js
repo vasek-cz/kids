@@ -271,7 +271,7 @@ class MathGame {
             const message = encouragements[Math.floor(Math.random() * encouragements.length)];
             this.showFeedback(message, 'correct');
             
-            setTimeout(() => this.generateNewQuestion(), 1500);
+            this.disableSubmitTemporarily(this.submitBtn, [this.answerInput]);
         } else {
             this.streak = 0;
             this.updateProgress(questionKey, false);
@@ -305,7 +305,7 @@ class MathGame {
             const message = encouragements[Math.floor(Math.random() * encouragements.length)];
             this.showRoundingFeedback(message, 'correct');
             
-            setTimeout(() => this.generateNewQuestion(), 1500);
+            this.disableSubmitTemporarily(this.roundingSubmitBtn, [this.roundingAnswerInput]);
         } else {
             this.streak = 0;
             this.updateRoundingProgress(roundingKey, false);
@@ -411,7 +411,7 @@ class MathGame {
             const message = encouragements[Math.floor(Math.random() * encouragements.length)];
             this.showFractionsFeedback(message, 'correct');
 
-            setTimeout(() => this.generateNewQuestion(), 1500);
+            this.disableSubmitTemporarily(this.fractionsSubmitBtn, [this.fractionNumeratorInput, this.fractionDenominatorInput]);
         } else {
             this.streak = 0;
             this.updateFractionsProgress(difficultyKey, false);
@@ -542,6 +542,16 @@ class MathGame {
     showRoundingFeedback(message, type) {
         this.roundingFeedbackElement.textContent = message;
         this.roundingFeedbackElement.className = `feedback ${type}`;
+    }
+
+    disableSubmitTemporarily(btn, inputs) {
+        btn.disabled = true;
+        inputs.forEach(input => input.disabled = true);
+        setTimeout(() => {
+            btn.disabled = false;
+            inputs.forEach(input => input.disabled = false);
+            this.generateNewQuestion();
+        }, 1500);
     }
 
     updateDisplay() {

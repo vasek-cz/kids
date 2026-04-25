@@ -217,6 +217,12 @@ h1 {
     -moz-appearance: textfield;
 }
 
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
 button {
     font-size: 1.2rem;
     padding: 12px 25px;
